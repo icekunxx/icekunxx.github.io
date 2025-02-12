@@ -1,0 +1,378 @@
+/* 🌟 โทนสีเว็บไซต์ */
+body {
+    background: linear-gradient(to right, #ffefba, #ffffff);
+    color: #333;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* 🌙 Dark Mode */
+.dark-mode {
+    background: linear-gradient(to right, #2c3e50, #34495e);
+    color: #ffffff;
+}
+
+/* 🔹 Navbar */
+.navbar {
+    background-image: url('pic1.jpg'); /* ใช้รูปพื้นหลัง */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+}
+
+.navbar-brand img {
+    height: 50px;
+    width: auto;
+}
+
+.navbar-nav .nav-item {
+    margin: 0 3px;
+}
+
+.navbar-brand, .nav-link {
+    color: #fff !important;
+    font-weight: bold;
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+}
+
+.dropdown-menu {
+    background-color: #ffd1b3;
+    border: none;
+    border-radius: 10px;
+}
+
+.dropdown-item:hover {
+    background-color: #ff7e5f;
+    color: #fff;
+}
+
+/* 🔹 Navbar รองรับ Dark Mode */
+.dark-mode .navbar {
+    background-color: #222 !important;
+}
+
+.dark-mode .dropdown-menu {
+    background-color: #333;
+}
+
+.dark-mode .dropdown-item {
+    color: #fff;
+}
+
+.dark-mode .dropdown-item:hover {
+    background-color: #555;
+}
+
+/* 🌙 ปุ่ม Toggle Dark Mode */
+.dark-mode-toggle {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+/* 🎡 Carousel */
+#foodCarousel {
+    margin-top: 1px; /* ให้ Carousel ขยับลงมาเลี่ยง Navbar */
+    width: 100vw;
+    max-width: 100%;
+}
+/* 🔹 เว้นระยะให้ Carousel ไม่โดน Navbar ทับ */
+.carousel-container {
+    margin-top: 70px; /* ปรับให้ Carousel ขยับลงมา */
+}
+.carousel-item img {
+    width: 100%; /* ให้รูปภาพเต็มความกว้างของ Carousel */
+    height: 400px; /* ป้องกันการบีบรูป */
+    object-fit: cover;
+}
+
+/* 🎛 ปรับปุ่มควบคุมของ Carousel */
+.carousel-control-prev,
+.carousel-control-next {
+    width: 5%;
+}
+
+/* 🔹 ปุ่ม Back to Top */
+#backToTopBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: none; /* ซ่อนปุ่มไว้ก่อน */
+    background-color: #ff7e5f;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#backToTopBtn:hover {
+    background-color: #ff6333;
+    transform: scale(1.1);
+}
+
+/* รองรับ Dark Mode */
+.dark-mode #backToTopBtn {
+    background-color: #444;
+}
+
+.dark-mode #backToTopBtn:hover {
+    background-color: #666;
+}
+#darkModeToggle {
+    position: fixed;
+    bottom: 20px; /* ระยะห่างจากขอบล่าง */
+    left: 20px;   /* ระยะห่างจากขอบซ้าย */
+    background-color: #ff7e5f; /* สีพื้นหลัง */
+    border: none;
+    padding: 10px 15px;
+    font-size: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 2px 2px 10px rgba(1, 0, 0, 0.2);
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+#darkModeToggle:hover {
+    background-color: #ff5722; /* เปลี่ยนสีเมื่อ Hover */
+    transform: scale(1.1);
+}
+
+
+/* 🔹 ปรับ Navbar Menu */
+.navbar-nav .nav-link {
+    font-size: 20px;
+    background-color: rgba(255, 255, 255, 0.4);
+    padding: 12px 25px; /* เพิ่ม Padding ให้ขนาดใกล้เคียงกัน */
+    border-radius: 10px;
+    min-width: 120px; /* กำหนดความกว้างขั้นต่ำของปุ่ม */
+    text-align: center; /* จัดให้ตัวอักษรอยู่ตรงกลาง */
+    transition: all 0.3s ease-in-out;
+}
+
+.navbar-nav .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.6);
+    color: #000 !important;
+}
+
+.dark-mode .navbar-nav .nav-link {
+    background-color: rgba(0, 0, 0, 0.3);
+    color: #fff !important;
+}
+
+.dark-mode .navbar-nav .nav-link:hover {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+/* 📊 BMI Calculator */
+.container {
+    width: 100%;
+    max-width: auto;
+    margin: auto;
+    padding: 20px;
+}
+
+.card {
+    width: 100%;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    background: white;
+    max-width: auto;
+    margin: auto;
+}
+
+/* 🖼 รูปภาพใน Card */
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.card-body {
+    text-align: center;
+}
+
+/* 🔹 หัวข้อ */
+h2 {
+    font-weight: bold;
+    color: #333;
+}
+
+/* 🔹 ปรับขนาด Input */
+input {
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    width: 100%;
+}
+
+/* 🎛 ปุ่ม */
+button {
+    background: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+/* 🔹 สไตล์ของผลลัพธ์ BMI */
+h3, h4 {
+    margin-top: 10px;
+}
+
+#bmiResult {
+    font-size: 22px;
+    font-weight: bold;
+    color: #ff5733;
+}
+
+#bmiCategory {
+    font-size: 18px;
+    font-weight: bold;
+    color: #17a2b8;
+}
+
+#weightSuggestion {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ff9f1c;
+}
+
+#calorieIntake {
+    font-size: 18px;
+    font-weight: bold;
+    color: #28a745;
+}
+
+/* 📱 รองรับมือถือ */
+@media (max-width: 768px) {
+    .container {
+        max-width: 100%;
+        padding: 10px;
+    }
+
+    .card {
+        max-width: 100%;
+        padding: 15px;
+    }
+
+    .carousel-item img {
+        height: 50vh;
+    }
+}
+/* 🔹 Footer */
+footer {
+    width: 100%;
+    background-color: #ff7e5f;
+    color: #fff;
+    text-align: center;
+    padding: 15px;
+    margin-top: 30px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    position: relative; /* ป้องกันการโดน Carousel ทับ */
+    bottom: 0;
+}
+
+/* 🔹 รองรับ Dark Mode */
+.dark-mode footer {
+    background-color: #222;
+    color: #fff;
+}
+
+/* 📱 Responsive Footer สำหรับมือถือ */
+@media (max-width: 768px) {
+    footer {
+        padding: 10px;
+        font-size: 14px;
+    }
+}
+.modal {
+    z-index: 1050 !important;
+}
+
+.modal-backdrop {
+    z-index: 1040 !important;
+}
+/****************************************************************************************กล่องล็อคอิน********************************************************************************************************************/
+/* ปรับแต่ง Modal */
+.modal-content {
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* เอฟเฟกต์แสดง Modal */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ส่วน Header ของ Modal */
+.modal-header {
+    background: linear-gradient(to right, #ff7e5f, #feb47b);
+    color: white;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+/* ปรับแต่งปุ่มปิด */
+.modal-header .btn-close {
+    filter: invert(1);
+}
+
+/* ปรับแต่งปุ่ม Login */
+.btn-login {
+    background: linear-gradient(to right, #ff7e5f, #ff6333);
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-login:hover {
+    background: linear-gradient(to right, #ff6333, #ff3d00);
+    transform: scale(1.05);
+}
+
+/* ช่องกรอกข้อมูล */
+.form-control {
+    border-radius: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    transition: 0.3s;
+}
+
+.form-control:focus {
+    border-color: #ff7e5f;
+    box-shadow: 0 0 8px rgba(255, 126, 95, 0.5);
+}

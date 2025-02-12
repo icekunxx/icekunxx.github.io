@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food Recommendation</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+<link rel="stylesheet" href="style.css">
+<style>
+.container {
+    width: 500px;
+    margin: auto;
+    padding: 20px;
+}	
+	.card {
+    width: 500px;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    background: white;
+    margin: auto;
+}
+	</style>
+</head>
+<body>
+
+  <!-- Navbar -->
+<nav class="navbar navbar-expand-lg sticky-top bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="index.html">
+        <img src="logo.jpg" alt="Foodie Delight Logo">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Recipes</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">More</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Tips</a></li>
+              <li><a class="dropdown-item" href="#">ระบบคำนวณแคลอรี</a></li>
+              <li><a class="dropdown-item" href="#">Events</a></li>
+              <li><a class="dropdown-item" href="#">Blog</a></li>
+            </ul>
+          </li>
+          <!-- เมนู คำนวณ BMI (จะถูกซ่อนไว้จนกว่าจะล็อกอิน) -->
+          <li class="nav-item" id="bmiMenu" style="display: none;">
+            <a class="nav-link" href="bmi-cal.html">คำนวณ BMI</a>
+          </li>
+        </ul>
+      </div>
+
+<!-- ปุ่ม Sign In และ Sign Out -->
+<div class="d-flex">
+    <button class="btn btn-outline-primary" id="signInBtn" data-bs-toggle="modal" data-bs-target="#loginModal">Sign In</button>
+    <button class="btn btn-outline-danger" id="signOutBtn" style="display: none;">Sign Out</button>
+</div>
+    </div>
+</nav>
+<!-- Modal สำหรับล็อกอิน -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Header ของ Modal -->
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModalLabel">เข้าสู่ระบบ</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- Body ของ Modal -->
+            <div class="modal-body">
+                <form id="loginForm">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" placeholder="กรอกชื่อผู้ใช้" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="กรอกรหัสผ่าน" required>
+                    </div>
+                    <button type="submit" class="btn btn-login w-100">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+      <!-- ปุ่ม Toggle Dark Mode -->
+      <button id="darkModeToggle" class="dark-mode-toggle ms-3">
+        🌙
+      </button>
+
+<div class="container mt-5">
+  <div class="card p-4">
+    <h2 class="text-center">📊 คำนวณ BMI และแนะนำปริมาณแคลอรี่ต่อวัน</h2>
+
+    <!-- ใช้ flex-column เพื่อให้ช่องน้ำหนักและส่วนสูงอยู่เรียงกันในแนวตั้ง -->
+    <div class="d-flex flex-column align-items-center">
+      <div class="col-md-6 mb-3">
+        <label for="weight">⚖️ น้ำหนัก (kg)</label>
+        <input type="number" id="weight" class="form-control" placeholder="เช่น 65">
+      </div>
+      <div class="col-md-6">
+        <label for="height">📏 ส่วนสูง (cm)</label>
+        <input type="number" id="height" class="form-control" placeholder="เช่น 170">
+      </div>
+    </div>
+
+    <div class="text-center mt-3">
+      <button class="btn btn-primary" onclick="calculateBMI()">📊 คำนวณ BMI</button>
+    </div>
+
+    <div class="mt-4 text-center">
+      <h3 id="bmiResult"></h3>
+      <h4 id="bmiCategory"></h4>
+      <h4 id="weightSuggestion"></h4>
+      <h4 id="calorieIntake"></h4>
+      <a id="mealPlanLink" class="btn btn-success mt-3" style="display: none;" target="_blank">📅 ดูเมนูอาหาร 7 วัน</a>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+    <script>
+function calculateBMI() {
+  let weight = parseFloat(document.getElementById("weight").value);
+  let height = parseFloat(document.getElementById("height").value);
+  let mealPlanLink = document.getElementById("mealPlanLink");
+
+  if (!weight || !height) {
+    alert("กรุณากรอกน้ำหนักและส่วนสูงให้ครบ");
+    return;
+  }
+
+  let heightInMeters = height / 100;
+  let bmi = weight / (heightInMeters * heightInMeters);
+
+  let bmiCategory = "";
+  let weightSuggestion = "";
+  let calorieIntake = "";
+  let mealPlanURL = "";
+
+  let bmr = weight * 24; // คำนวณค่า BMR (Basal Metabolic Rate)
+
+  if (bmi < 18.5) {
+    bmiCategory = "น้ำหนักต่ำกว่าเกณฑ์ (ผอม)";
+    weightSuggestion = "คุณควรเพิ่มน้ำหนักเพื่อสุขภาพที่ดีขึ้น";
+    calorieIntake = `🍛 ควรกินเพิ่มวันละประมาณ ${bmr + 500} kcal เพื่อเพิ่มน้ำหนัก`;
+    mealPlanURL = "meal_plan_underweight.html"; // ลิงก์ไปหน้าตารางอาหารสำหรับผู้ที่ผอม
+  } else if (bmi >= 18.5 && bmi < 24.9) {
+    bmiCategory = "น้ำหนักปกติ (สุขภาพดี)";
+    weightSuggestion = "คุณมีน้ำหนักอยู่ในเกณฑ์ที่ดีแล้ว!";
+    calorieIntake = `🔥 ควรกินวันละประมาณ ${bmr} kcal เพื่อรักษาน้ำหนัก`;
+    mealPlanURL = "meal_plan_normal.html"; // ลิงก์ไปหน้าตารางอาหารสำหรับคนปกติ
+  } else if (bmi >= 25 && bmi < 29.9) {
+    bmiCategory = "น้ำหนักเกิน (เริ่มมีความเสี่ยง)";
+    weightSuggestion = "คุณควรลดน้ำหนักเพื่อสุขภาพที่ดีขึ้น";
+    calorieIntake = `🥗 ควรกินลดลงวันละประมาณ ${bmr - 500} kcal เพื่อค่อยๆ ลดน้ำหนัก`;
+    mealPlanURL = "meal_plan_overweight.html"; // ลิงก์ไปหน้าตารางอาหารสำหรับคนที่น้ำหนักเกิน
+  } else {
+    bmiCategory = "อ้วน (มีความเสี่ยงสูง)";
+    weightSuggestion = "คุณควรลดน้ำหนักเพื่อลดความเสี่ยงต่อโรค";
+    calorieIntake = `🥦 ควรกินลดลงวันละประมาณ ${bmr - 700} kcal เพื่อช่วยลดน้ำหนักเร็วขึ้น`;
+    mealPlanURL = "meal_plan_obese.html"; // ลิงก์ไปหน้าตารางอาหารสำหรับคนที่อ้วน
+  }
+
+  document.getElementById("bmiResult").textContent = `📏 BMI ของคุณ: ${bmi.toFixed(2)}`;
+  document.getElementById("bmiCategory").textContent = `📌 หมวดหมู่: ${bmiCategory}`;
+  document.getElementById("weightSuggestion").textContent = `💡 คำแนะนำ: ${weightSuggestion}`;
+  document.getElementById("calorieIntake").textContent = `⚡ ${calorieIntake}`;
+
+  // แสดงลิงก์ไปตารางอาหารเฉพาะเมื่อคำนวณ BMI สำเร็จ
+  if (mealPlanURL) {
+    mealPlanLink.href = mealPlanURL;
+    mealPlanLink.style.display = "inline-block";
+  } else {
+    mealPlanLink.style.display = "none";
+  }
+}
+
+    </script>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Foodie Delight. All Rights Reserved.</p>
+  </footer>
+<!-- ปุ่มกลับไปด้านบน -->
+<button onclick="scrollToTop()" id="backToTopBtn" class="btn btn-primary">
+  <i class="bi bi-arrow-up"></i> 
+</button>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      let navLinks = document.querySelectorAll(".nav-link");
+      let currentPath = window.location.pathname;
+
+      navLinks.forEach(link => {
+        if (link.getAttribute("href") === currentPath) {
+          link.classList.add("active");
+        }
+      });
+    });
+
+    // Dark Mode Toggle
+    document.addEventListener("DOMContentLoaded", function() {
+      const darkModeToggle = document.getElementById("darkModeToggle");
+      const body = document.body;
+
+      // ตรวจสอบสถานะ Dark Mode จาก LocalStorage
+      if (localStorage.getItem("darkMode") === "enabled") {
+        body.classList.add("dark-mode");
+        darkModeToggle.textContent = "☀️";
+      }
+
+      darkModeToggle.addEventListener("click", function() {
+        body.classList.toggle("dark-mode");
+
+        if (body.classList.contains("dark-mode")) {
+          localStorage.setItem("darkMode", "enabled");
+          darkModeToggle.textContent = "☀️";
+        } else {
+          localStorage.setItem("darkMode", "disabled");
+          darkModeToggle.textContent = "🌙";
+        }
+      });
+    });
+  </script>
+  <script>
+  // แสดงหรือซ่อนปุ่มเมื่อเลื่อนหน้า
+window.onscroll = function() { scrollFunction(); };
+
+function scrollFunction() {
+  let btn = document.getElementById("backToTopBtn");
+  if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+    btn.style.display = "flex";
+  } else {
+    btn.style.display = "none";
+  }
+}
+
+// เลื่อนกลับไปด้านบนเมื่อกดปุ่ม
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+  </script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const loginForm = document.getElementById("loginForm");
+    const usernameInput = document.getElementById("username");
+    const passwordInput = document.getElementById("password");
+    const bmiMenu = document.getElementById("bmiMenu");
+    const signInBtn = document.getElementById("signInBtn");
+    const signOutBtn = document.getElementById("signOutBtn");
+    const loginModalEl = document.getElementById("loginModal");
+    const loginModal = new bootstrap.Modal(loginModalEl);
+
+    // ตรวจสอบว่าผู้ใช้ล็อกอินอยู่หรือไม่
+    if (localStorage.getItem("loggedIn") === "true") {
+        bmiMenu.style.display = "block"; // แสดงเมนู BMI
+        signInBtn.style.display = "none"; // ซ่อนปุ่ม Sign In
+        signOutBtn.style.display = "block"; // แสดงปุ่ม Sign Out
+    }
+
+    // การล็อกอิน
+    loginForm.addEventListener("submit", function(event) {
+        event.preventDefault();
+        const username = usernameInput.value;
+        const password = passwordInput.value;
+
+        if (username === "test" && password === "password") {
+            alert("เข้าสู่ระบบสำเร็จ!");
+            bmiMenu.style.display = "block"; // แสดงเมนู BMI
+            signInBtn.style.display = "none"; // ซ่อนปุ่ม Sign In
+            signOutBtn.style.display = "block"; // แสดงปุ่ม Sign Out
+            localStorage.setItem("loggedIn", "true");
+            loginModal.hide();
+            loginModalEl.classList.remove("show");
+            document.body.classList.remove("modal-open");
+            document.querySelector(".modal-backdrop").remove();
+        } else {
+            alert("Username หรือ Password ไม่ถูกต้อง!");
+        }
+    });
+
+    // การล็อกเอาต์ (Sign Out)
+    signOutBtn.addEventListener("click", function() {
+        alert("ออกจากระบบเรียบร้อย!");
+        localStorage.removeItem("loggedIn"); // ลบสถานะล็อกอิน
+        bmiMenu.style.display = "none"; // ซ่อนเมนู BMI
+        signInBtn.style.display = "block"; // แสดงปุ่ม Sign In
+        signOutBtn.style.display = "none"; // ซ่อนปุ่ม Sign Out
+    });
+});
+
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    const loginModal = new bootstrap.Modal(document.getElementById("loginModal"));
+    const signInBtn = document.getElementById("signInBtn");
+
+    signInBtn.addEventListener("click", function() {
+        document.querySelectorAll(".modal-backdrop").forEach(e => e.remove()); // ลบ Backdrop ที่อาจซ้ำ
+        loginModal.show();
+    });
+});
+
+</script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

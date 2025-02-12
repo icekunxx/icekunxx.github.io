@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food Recommendation</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+  .modal {
+    z-index: 1050 !important;
+}
+
+.modal-backdrop {
+    z-index: 1040 !important;
+    background-color: rgba(0, 0, 0, 0.5) !important; /* ทำให้โปร่งใสเล็กน้อย */
+}
+
+body.modal-open {
+    overflow: hidden !important;
+}
+
+  </style>
+  
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg sticky-top bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="index.html">
+        <img src="logo.jpg" alt="Foodie Delight Logo">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Recipes</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">More</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Tips</a></li>
+              <li><a class="dropdown-item" href="#">ระบบคำนวณแคลอรี</a></li>
+              <li><a class="dropdown-item" href="#">Events</a></li>
+              <li><a class="dropdown-item" href="#">Blog</a></li>
+            </ul>
+          </li>
+          <!-- เมนู คำนวณ BMI (จะถูกซ่อนไว้จนกว่าจะล็อกอิน) -->
+          <li class="nav-item" id="bmiMenu" style="display: none;">
+            <a class="nav-link" href="bmi-cal.html">คำนวณ BMI</a>
+          </li>
+        </ul>
+      </div>
+
+<!-- ปุ่ม Sign In และ Sign Out -->
+<div class="d-flex">
+    <button class="btn btn-outline-primary" id="signInBtn" data-bs-toggle="modal" data-bs-target="#loginModal">Sign In</button>
+    <button class="btn btn-outline-danger" id="signOutBtn" style="display: none;">Sign Out</button>
+</div>
+    </div>
+</nav>
+<!-- Modal สำหรับล็อกอิน -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Header ของ Modal -->
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModalLabel">เข้าสู่ระบบ</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- Body ของ Modal -->
+            <div class="modal-body">
+                <form id="loginForm">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" placeholder="กรอกชื่อผู้ใช้" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="กรอกรหัสผ่าน" required>
+                    </div>
+                    <button type="submit" class="btn btn-login w-100">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- เมนูเพิ่มเติม (จะถูกซ่อนไว้) -->
+<li class="nav-item" id="bmiMenu" style="display: none;">
+    <a class="nav-link" href="bmi.html">คำนวณ BMI</a>
+</li>
+      <!-- ปุ่ม Toggle Dark Mode -->
+      <button id="darkModeToggle" class="dark-mode-toggle ms-3">
+        🌙
+      </button>
+    </div>
+  </nav>
+
+
+
+<!-- Carousel Section -->
+<div id="foodCarousel" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="pic1.jpg" class="d-block w-100" alt="อาหารจานแรก">
+    </div>
+    <div class="carousel-item">
+      <img src="pic2.jpg" class="d-block w-100" alt="อาหารจานที่สอง">
+    </div>
+    <div class="carousel-item">
+      <img src="pic3.jpg" class="d-block w-100" alt="อาหารจานที่สาม">
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#foodCarousel" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#foodCarousel" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+
+
+<!-- Article Section -->
+<div class="container mt-5">
+  <h2 class="text-center">บทความแนะนำ</h2>
+  <div class="row mt-4">
+    
+    <!-- บทความที่ 1 -->
+    <div class="col-md-4">
+      <div class="card">
+        <img src="pic1.jpg" class="card-img-top" alt="อาหารเพื่อสุขภาพ">
+        <div class="card-body">
+          <h5 class="card-title">5 เมนูเพื่อสุขภาพที่ควรกิน</h5>
+          <p class="card-text">แนะนำเมนูอาหารเพื่อสุขภาพที่อร่อยและดีต่อร่างกาย...</p>
+          <a href="page1.html" class="btn btn-primary">อ่านเพิ่มเติม</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- บทความที่ 2 -->
+    <div class="col-md-4">
+      <div class="card">
+        <img src="pic2.jpg" class="card-img-top" alt="อาหารคีโต">
+        <div class="card-body">
+          <h5 class="card-title">อาหารคีโตที่ควรรู้จัก</h5>
+          <p class="card-text">ไขมันดี คาร์โบไฮเดรตต่ำ อาหารคีโตเหมาะกับใครบ้าง...</p>
+          <a href="article2.html" class="btn btn-primary">อ่านเพิ่มเติม</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- บทความที่ 3 -->
+    <div class="col-md-4">
+      <div class="card">
+        <img src="pic3.jpg" class="card-img-top" alt="เมนูง่ายๆ">
+        <div class="card-body">
+          <h5 class="card-title">เมนูง่ายๆ ทำเองได้ที่บ้าน</h5>
+          <p class="card-text">แชร์ไอเดียเมนูง่ายๆ ที่ทำได้เอง ไม่ต้องเป็นเชฟมือโปร...</p>
+          <a href="article3.html" class="btn btn-primary">อ่านเพิ่มเติม</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+  <!-- Header -->
+  <div class="container mt-5 text-center">
+    <h1>Discover Your Perfect Meal</h1>
+    <p>Personalized food recommendations for a healthier lifestyle.</p>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Foodie Delight. All Rights Reserved.</p>
+  </footer>
+<!-- ปุ่มกลับไปด้านบน -->
+<button onclick="scrollToTop()" id="backToTopBtn" class="btn btn-primary">
+  <i class="bi bi-arrow-up"></i> 
+</button>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      let navLinks = document.querySelectorAll(".nav-link");
+      let currentPath = window.location.pathname;
+
+      navLinks.forEach(link => {
+        if (link.getAttribute("href") === currentPath) {
+          link.classList.add("active");
+        }
+      });
+    });
+
+    // Dark Mode Toggle
+    document.addEventListener("DOMContentLoaded", function() {
+      const darkModeToggle = document.getElementById("darkModeToggle");
+      const body = document.body;
+
+      // ตรวจสอบสถานะ Dark Mode จาก LocalStorage
+      if (localStorage.getItem("darkMode") === "enabled") {
+        body.classList.add("dark-mode");
+        darkModeToggle.textContent = "☀️";
+      }
+
+      darkModeToggle.addEventListener("click", function() {
+        body.classList.toggle("dark-mode");
+
+        if (body.classList.contains("dark-mode")) {
+          localStorage.setItem("darkMode", "enabled");
+          darkModeToggle.textContent = "☀️";
+        } else {
+          localStorage.setItem("darkMode", "disabled");
+          darkModeToggle.textContent = "🌙";
+        }
+      });
+    });
+  </script>
+  <script>
+  // แสดงหรือซ่อนปุ่มเมื่อเลื่อนหน้า
+window.onscroll = function() { scrollFunction(); };
+
+function scrollFunction() {
+  let btn = document.getElementById("backToTopBtn");
+  if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+    btn.style.display = "flex";
+  } else {
+    btn.style.display = "none";
+  }
+}
+
+// เลื่อนกลับไปด้านบนเมื่อกดปุ่ม
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+  </script>
+  
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const loginForm = document.getElementById("loginForm");
+    const usernameInput = document.getElementById("username");
+    const passwordInput = document.getElementById("password");
+    const bmiMenu = document.getElementById("bmiMenu");
+    const signInBtn = document.getElementById("signInBtn");
+    const signOutBtn = document.getElementById("signOutBtn");
+    const loginModalEl = document.getElementById("loginModal");
+    const loginModal = new bootstrap.Modal(loginModalEl);
+
+    // ตรวจสอบว่าผู้ใช้ล็อกอินอยู่หรือไม่
+    if (localStorage.getItem("loggedIn") === "true") {
+        bmiMenu.style.display = "block"; // แสดงเมนู BMI
+        signInBtn.style.display = "none"; // ซ่อนปุ่ม Sign In
+        signOutBtn.style.display = "block"; // แสดงปุ่ม Sign Out
+    }
+
+    // การล็อกอิน
+    loginForm.addEventListener("submit", function(event) {
+        event.preventDefault();
+        const username = usernameInput.value;
+        const password = passwordInput.value;
+
+        if (username === "test" && password === "password") {
+            alert("เข้าสู่ระบบสำเร็จ!");
+            bmiMenu.style.display = "block"; // แสดงเมนู BMI
+            signInBtn.style.display = "none"; // ซ่อนปุ่ม Sign In
+            signOutBtn.style.display = "block"; // แสดงปุ่ม Sign Out
+            localStorage.setItem("loggedIn", "true");
+            loginModal.hide();
+            loginModalEl.classList.remove("show");
+            document.body.classList.remove("modal-open");
+            document.querySelector(".modal-backdrop").remove();
+        } else {
+            alert("Username หรือ Password ไม่ถูกต้อง!");
+        }
+    });
+
+    // การล็อกเอาต์ (Sign Out)
+    signOutBtn.addEventListener("click", function() {
+        alert("ออกจากระบบเรียบร้อย!");
+        localStorage.removeItem("loggedIn"); // ลบสถานะล็อกอิน
+        bmiMenu.style.display = "none"; // ซ่อนเมนู BMI
+        signInBtn.style.display = "block"; // แสดงปุ่ม Sign In
+        signOutBtn.style.display = "none"; // ซ่อนปุ่ม Sign Out
+    });
+});
+
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    const loginModal = new bootstrap.Modal(document.getElementById("loginModal"));
+    const signInBtn = document.getElementById("signInBtn");
+
+    signInBtn.addEventListener("click", function() {
+        document.querySelectorAll(".modal-backdrop").forEach(e => e.remove()); // ลบ Backdrop ที่อาจซ้ำ
+        loginModal.show();
+    });
+});
+
+</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
